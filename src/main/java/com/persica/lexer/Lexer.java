@@ -49,6 +49,8 @@ public class Lexer {
      */
     private void scanToken() {
 
+
+
         char c = reader.advance();
 
         switch (c) {
@@ -61,11 +63,19 @@ public class Lexer {
                 break;
 
             default:
-                // TODO: Next commits
+                if (isAlpha(c)) {
+                    identifier();
+                } else if (isDigit(c)) {
+                    number();
+                }
                 break;
         }
 
+
+
     }
+
+
 
     /**
      * Adds a token to the token list.
@@ -81,6 +91,86 @@ public class Lexer {
                 )
         );
 
+    }
+
+    private boolean isAlpha(char c) {
+        return Character.isLetter(c) || c == '_';
+    }
+
+    private boolean isAlphaNumeric(char c) {
+        return isAlpha(c) || Character.isDigit(c);
+    }
+
+    private void identifier() {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(reader.advance()); // اولین کاراکتر
+
+        while (!reader.isAtEnd() && isAlphaNumeric(reader.peek())) {
+            sb.append(reader.advance());
+        }
+
+        String text = sb.toString();
+
+        TokenType type = switch (text) {
+
+            case "int" -> TokenType.INT;
+            case "long" -> TokenType.LONG;
+            case "float" -> TokenType.FLOAT;
+            case "double" -> TokenType.DOUBLE;
+
+            case "bool" -> TokenType.BOOL;
+            case "char" -> TokenType.CHAR;
+            case "string" -> TokenType.STRING;
+
+            case "if" -> TokenType.IF;
+            case "else" -> TokenType.ELSE;
+            case "while" -> TokenType.WHILE;
+
+            case "def" -> TokenType.DEF;
+            case "return" -> TokenType.RETURN;
+
+            case "print" -> TokenType.PRINT;
+
+            case "true" -> TokenType.TRUE;
+            case "false" -> TokenType.FALSE;
+
+            case "null" -> TokenType.NULL;
+
+            default -> TokenType.IDENTIFIER;
+        };
+
+        addToken(type, text);
+    }
+
+    private boolean isDigit(char c) {
+        return Character.isDigit(c);
+    }
+
+    private void number() {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(reader.advance());
+
+        while (!reader.isAtEnd() && isDigit(reader.peek())) {
+            sb.append(reader.advance());
+        }
+
+        // بررسی عدد اعشاری
+        if (!reader.isAtEnd() && reader.peek() == '.' && isDigit(reader.peekNext())) {
+
+            sb.append(reader.advance()); // '.'
+
+            while (!reader.isAtEnd() && isDigit(reader.peek())) {
+                sb.append(reader.advance());
+            }
+        }
+
+        String text = sb.toString();
+
+        addToken(TokenType.NUMBER, text);
     }
 
 }
