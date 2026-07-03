@@ -3,6 +3,9 @@ package com.persica.lexer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.persica.lexer.util.CharUtil;
+import com.persica.lexer.keyword.KeywordTable;
+
 /**
  * Persica Lexer
  *
@@ -60,13 +63,13 @@ public class Lexer {
         }
 
         // ===== identifier / keyword =====
-        if (isAlpha(c)) {
+        if (CharUtil.isAlpha(c)) {
             identifier();
             return;
         }
 
         // ===== number =====
-        if (isDigit(c)) {
+        if (CharUtil.isDigit(c)) {
             number();
             return;
         }
@@ -100,13 +103,7 @@ public class Lexer {
 
     }
 
-    private boolean isAlpha(char c) {
-        return Character.isLetter(c) || c == '_';
-    }
 
-    private boolean isAlphaNumeric(char c) {
-        return isAlpha(c) || Character.isDigit(c);
-    }
 
     private void identifier() {
 
@@ -114,45 +111,16 @@ public class Lexer {
 
         // ❗ مهم: چون char اول قبلاً consume شده در scanToken
 
-        while (!reader.isAtEnd() && isAlphaNumeric(reader.peek())) {
+        while (!reader.isAtEnd() && CharUtil.isAlphaNumeric(reader.peek())) {
             sb.append(reader.advance());
         }
 
         String text = sb.toString();
 
-        TokenType type = switch (text) {
-
-            case "int" -> TokenType.INT;
-            case "long" -> TokenType.LONG;
-            case "float" -> TokenType.FLOAT;
-            case "double" -> TokenType.DOUBLE;
-
-            case "bool" -> TokenType.BOOL;
-            case "char" -> TokenType.CHAR;
-            case "string" -> TokenType.STRING;
-
-            case "if" -> TokenType.IF;
-            case "else" -> TokenType.ELSE;
-            case "while" -> TokenType.WHILE;
-
-            case "def" -> TokenType.DEF;
-            case "return" -> TokenType.RETURN;
-
-            case "print" -> TokenType.PRINT;
-
-            case "true" -> TokenType.TRUE;
-            case "false" -> TokenType.FALSE;
-
-            case "null" -> TokenType.NULL;
-
-            default -> TokenType.IDENTIFIER;
-        };
-
+        TokenType type = KeywordTable.lookup(text);
         addToken(type, text);
     }
-    private boolean isDigit(char c) {
-        return Character.isDigit(c);
-    }
+
 
     private void number() {
 
@@ -160,16 +128,16 @@ public class Lexer {
 
         sb.append(reader.advance());
 
-        while (!reader.isAtEnd() && isDigit(reader.peek())) {
+        while (!reader.isAtEnd() && CharUtil.isDigit(reader.peek())) {
             sb.append(reader.advance());
         }
 
         // بررسی عدد اعشاری
-        if (!reader.isAtEnd() && reader.peek() == '.' && isDigit(reader.peekNext())) {
+        if (!reader.isAtEnd() && reader.peek() == '.' && CharUtil.isDigit(reader.peekNext())) {
 
             sb.append(reader.advance()); // '.'
 
-            while (!reader.isAtEnd() && isDigit(reader.peek())) {
+            while (!reader.isAtEnd() && CharUtil.isDigit(reader.peek())) {
                 sb.append(reader.advance());
             }
         }
