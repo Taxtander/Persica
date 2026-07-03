@@ -43,6 +43,8 @@ bin/
 .DS_Store
 
 
+main.py
+directory_tree.txt
 
 Thumbs.db
 

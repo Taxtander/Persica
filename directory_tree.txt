@@ -19,6 +19,11 @@
 │   │   └── cache.properties
 │   └── vcs-1
 │       └── gc.properties
+├── docs
+│   ├── compiler
+│   ├── examples
+│   ├── images
+│   └── language
 ├── gradle
 │   └── wrapper
 │       ├── gradle-wrapper.jar
@@ -28,10 +33,20 @@
 │   │   ├── java
 │   │   │   └── com
 │   │   │       └── persica
+│   │   │           ├── ast
+│   │   │           ├── codegen
+│   │   │           ├── lexer
+│   │   │           ├── parser
+│   │   │           ├── project
+│   │   │           ├── runtime
+│   │   │           ├── semantic
+│   │   │           ├── util
 │   │   │           └── Main.java
 │   │   └── resources
 │   └── test
 │       ├── java
+│       │   └── com
+│       │       └── persica
 │       └── resources
 ├── .gitignore
 ├── build.gradle.kts
