@@ -68,6 +68,9 @@ public class Lexer {
                 } else if (isDigit(c)) {
                     number();
                 }
+                else if (c == '"') {
+                    string();
+                }
                 break;
         }
 
@@ -171,6 +174,26 @@ public class Lexer {
         String text = sb.toString();
 
         addToken(TokenType.NUMBER, text);
+    }
+
+    private void string() {
+
+        StringBuilder sb = new StringBuilder();
+
+        while (!reader.isAtEnd() && reader.peek() != '"') {
+            sb.append(reader.advance());
+        }
+
+        if (reader.isAtEnd()) {
+            // TODO: error handling later
+            return;
+        }
+
+        reader.advance(); // closing "
+
+        String text = sb.toString();
+
+        addToken(TokenType.STRING_LITERAL, text);
     }
 
 }
