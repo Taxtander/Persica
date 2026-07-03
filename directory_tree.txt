@@ -5,25 +5,39 @@
 │   │   ├── checksums
 │   │   │   └── checksums.lock
 │   │   ├── executionHistory
+│   │   │   ├── executionHistory.bin
 │   │   │   └── executionHistory.lock
 │   │   ├── expanded
 │   │   ├── fileChanges
 │   │   │   └── last-build.bin
 │   │   ├── fileHashes
 │   │   │   ├── fileHashes.bin
-│   │   │   └── fileHashes.lock
+│   │   │   ├── fileHashes.lock
+│   │   │   └── resourceHashesCache.bin
 │   │   ├── vcsMetadata
 │   │   └── gc.properties
 │   ├── buildOutputCleanup
 │   │   ├── buildOutputCleanup.lock
-│   │   └── cache.properties
-│   └── vcs-1
-│       └── gc.properties
+│   │   ├── cache.properties
+│   │   └── outputFiles.bin
+│   ├── vcs-1
+│   │   └── gc.properties
+│   └── file-system.probe
 ├── docs
 │   ├── compiler
+│   │   ├── ast.md
+│   │   ├── codegen.md
+│   │   ├── lexer.md
+│   │   ├── parser.md
+│   │   └── semantic.md
 │   ├── examples
 │   ├── images
 │   └── language
+│       ├── grammar.md
+│       ├── keywords.md
+│       ├── operators.md
+│       ├── syntax.md
+│       └── types.md
 ├── gradle
 │   └── wrapper
 │       ├── gradle-wrapper.jar
@@ -34,11 +48,29 @@
 │   │   │   └── com
 │   │   │       └── persica
 │   │   │           ├── ast
+│   │   │           │   ├── expr
+│   │   │           │   │   ├── BinaryExpression.java
+│   │   │           │   │   ├── Expression.java
+│   │   │           │   │   ├── Identifier.java
+│   │   │           │   │   └── Literal.java
+│   │   │           │   ├── stmt
+│   │   │           │   │   ├── ExpressionStatement.java
+│   │   │           │   │   ├── PrintStatement.java
+│   │   │           │   │   ├── Statement.java
+│   │   │           │   │   └── VariableDeclaration.java
+│   │   │           │   └── ASTNode.java
 │   │   │           ├── codegen
 │   │   │           ├── lexer
+│   │   │           │   ├── Lexer.java
+│   │   │           │   ├── SourceReader.java
+│   │   │           │   ├── Token.java
+│   │   │           │   └── TokenType.java
 │   │   │           ├── parser
+│   │   │           │   └── Parser.java
 │   │   │           ├── project
 │   │   │           ├── runtime
+│   │   │           │   ├── Environment.java
+│   │   │           │   └── Interpreter.java
 │   │   │           ├── semantic
 │   │   │           ├── util
 │   │   │           └── Main.java
@@ -49,6 +81,11 @@
 │       │       └── persica
 │       └── resources
 ├── .gitignore
+├── CHANGELOG.md
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
+├── README.md
+├── ROADMAP.md
 ├── build.gradle.kts
 ├── directory_tree.txt
 ├── gradlew

@@ -49,39 +49,39 @@ public class Lexer {
      */
     private void scanToken() {
 
+        char c = reader.peek(); // ❗ فقط نگاه کن، مصرف نکن
 
+        if (reader.isAtEnd()) return;
 
-        char c = reader.advance();
-
-        switch (c) {
-
-            case ' ':
-            case '\t':
-            case '\r':
-            case '\n':
-                // Ignore whitespace
-                break;
-
-            default:
-                if (isAlpha(c)) {
-                    identifier();
-                } else if (isDigit(c)) {
-                    number();
-                }
-                else if (c == '"') {
-                    string();
-                }
-
-                else {
-                    operatorOrSymbol(c);
-                }
-                break;
+        // ===== whitespace =====
+        if (c == ' ' || c == '\t' || c == '\r' || c == '\n') {
+            reader.advance();
+            return;
         }
 
+        // ===== identifier / keyword =====
+        if (isAlpha(c)) {
+            identifier();
+            return;
+        }
 
+        // ===== number =====
+        if (isDigit(c)) {
+            number();
+            return;
+        }
 
+        // ===== string =====
+        if (c == '"') {
+            reader.advance(); // consume "
+            string();
+            return;
+        }
+
+        // ===== operators & symbols =====
+        reader.advance();
+        operatorOrSymbol(c);
     }
-
 
 
     /**
@@ -112,7 +112,7 @@ public class Lexer {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(reader.advance()); // اولین کاراکتر
+        // ❗ مهم: چون char اول قبلاً consume شده در scanToken
 
         while (!reader.isAtEnd() && isAlphaNumeric(reader.peek())) {
             sb.append(reader.advance());
@@ -150,7 +150,6 @@ public class Lexer {
 
         addToken(type, text);
     }
-
     private boolean isDigit(char c) {
         return Character.isDigit(c);
     }
@@ -189,17 +188,13 @@ public class Lexer {
         }
 
         if (reader.isAtEnd()) {
-            // TODO: error handling later
-            return;
+            throw new RuntimeException("Unterminated string");
         }
 
         reader.advance(); // closing "
 
-        String text = sb.toString();
-
-        addToken(TokenType.STRING_LITERAL, text);
+        addToken(TokenType.STRING_LITERAL, sb.toString());
     }
-
     private void operatorOrSymbol(char c) {
 
         switch (c) {

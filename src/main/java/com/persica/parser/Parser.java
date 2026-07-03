@@ -2,7 +2,10 @@ package com.persica.parser;
 
 import com.persica.lexer.Token;
 import com.persica.lexer.TokenType;
+import com.persica.ast.expr.*;
+import com.persica.ast.stmt.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
@@ -14,55 +17,149 @@ public class Parser {
         this.tokens = tokens;
     }
 
-    public void parse() {
+    // =========================
+    // ENTRY POINT
+    // =========================
+    public List<Statement> parse() {
+
+        List<Statement> statements = new ArrayList<>();
 
         while (!isAtEnd()) {
-            statement();
+            statements.add(statement());
         }
+
+        return statements;
     }
 
-    private void statement() {
+    // =========================
+    // STATEMENTS
+    // =========================
+    private Statement statement() {
 
         if (match(TokenType.INT, TokenType.STRING, TokenType.BOOL)) {
-            variableDeclaration();
-        } else if (match(TokenType.PRINT)) {
-            printStatement();
-        } else {
-            expressionStatement();
+            return variableDeclaration();
         }
+
+        if (match(TokenType.PRINT)) {
+            return printStatement();
+        }
+
+        return expressionStatement();
     }
 
-    private void variableDeclaration() {
-        System.out.println("VAR DECL");
+    // int a = 5;
+    private Statement variableDeclaration() {
+
+        Token name = consume(TokenType.IDENTIFIER, "Expect variable name.");
+
+        consume(TokenType.ASSIGN, "Expect '=' after variable name.");
+
+        Expression value = expression();
+
+        consume(TokenType.SEMICOLON, "Expect ';' after declaration.");
+
+        return new VariableDeclaration(name.getLexeme(), value);
     }
 
-    private void printStatement() {
-        System.out.println("PRINT STMT");
+    private Statement printStatement() {
+
+        consume(TokenType.LEFT_PAREN, "Expect '(' after print.");
+
+        Expression value = expression();
+
+        consume(TokenType.RIGHT_PAREN, "Expect ')' after value.");
+
+        consume(TokenType.SEMICOLON, "Expect ';' after print statement.");
+
+        return new PrintStatement(value);
     }
 
-    private void expressionStatement() {
-        System.out.println("EXPR STMT");
+    private Statement expressionStatement() {
+
+        Expression expr = expression();
+
+        consume(TokenType.SEMICOLON, "Expect ';' after expression.");
+
+        return new ExpressionStatement(expr);
     }
 
-    // ===== Helpers =====
+    // =========================
+    // EXPRESSIONS
+    // =========================
+    private Expression expression() {
+        return addition();
+    }
 
+    private Expression addition() {
+
+        Expression expr = multiplication();
+
+        while (match(TokenType.PLUS, TokenType.MINUS)) {
+
+            Token operator = previous();
+            Expression right = multiplication();
+
+            expr = new BinaryExpression(expr, operator.getLexeme(), right);
+        }
+
+        return expr;
+    }
+
+    private Expression multiplication() {
+
+        Expression expr = primary();
+
+        while (match(TokenType.STAR, TokenType.SLASH)) {
+
+            Token operator = previous();
+            Expression right = primary();
+
+            expr = new BinaryExpression(expr, operator.getLexeme(), right);
+        }
+
+        return expr;
+    }
+
+    private Expression primary() {
+
+        if (match(TokenType.NUMBER)) {
+            return new Literal(previous().getLexeme());
+        }
+
+        if (match(TokenType.IDENTIFIER)) {
+            return new Identifier(previous().getLexeme());
+        }
+
+        return null;
+    }
+
+    // =========================
+    // HELPERS
+    // =========================
     private boolean match(TokenType... types) {
+
         for (TokenType type : types) {
+
             if (check(type)) {
                 advance();
                 return true;
             }
         }
+
         return false;
     }
 
     private boolean check(TokenType type) {
+
         if (isAtEnd()) return false;
+
         return peek().getType() == type;
     }
 
     private Token advance() {
+
         if (!isAtEnd()) current++;
+
         return previous();
     }
 
@@ -76,5 +173,12 @@ public class Parser {
 
     private Token previous() {
         return tokens.get(current - 1);
+    }
+
+    private Token consume(TokenType type, String message) {
+
+        if (check(type)) return advance();
+
+        throw new RuntimeException(message);
     }
 }
