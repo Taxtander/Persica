@@ -71,6 +71,10 @@ public class Lexer {
                 else if (c == '"') {
                     string();
                 }
+
+                else {
+                    operatorOrSymbol(c);
+                }
                 break;
         }
 
@@ -194,6 +198,66 @@ public class Lexer {
         String text = sb.toString();
 
         addToken(TokenType.STRING_LITERAL, text);
+    }
+
+    private void operatorOrSymbol(char c) {
+
+        switch (c) {
+
+            // ===== Single-character operators =====
+            case '+' -> addToken(TokenType.PLUS, "+");
+            case '-' -> addToken(TokenType.MINUS, "-");
+            case '*' -> addToken(TokenType.STAR, "*");
+            case '/' -> addToken(TokenType.SLASH, "/");
+
+            case '=' -> {
+                if (reader.match('=')) {
+                    addToken(TokenType.EQUAL, "==");
+                } else {
+                    addToken(TokenType.ASSIGN, "=");
+                }
+            }
+
+            case '!' -> {
+                if (reader.match('=')) {
+                    addToken(TokenType.NOT_EQUAL, "!=");
+                }
+            }
+
+            case '>' -> {
+                if (reader.match('=')) {
+                    addToken(TokenType.GREATER_EQUAL, ">=");
+                } else {
+                    addToken(TokenType.GREATER, ">");
+                }
+            }
+
+            case '<' -> {
+                if (reader.match('=')) {
+                    addToken(TokenType.LESS_EQUAL, "<=");
+                } else {
+                    addToken(TokenType.LESS, "<");
+                }
+            }
+
+            // ===== Symbols =====
+            case '(' -> addToken(TokenType.LEFT_PAREN, "(");
+            case ')' -> addToken(TokenType.RIGHT_PAREN, ")");
+
+            case '{' -> addToken(TokenType.LEFT_BRACE, "{");
+            case '}' -> addToken(TokenType.RIGHT_BRACE, "}");
+
+            case '[' -> addToken(TokenType.LEFT_BRACKET, "[");
+            case ']' -> addToken(TokenType.RIGHT_BRACKET, "]");
+
+            case ';' -> addToken(TokenType.SEMICOLON, ";");
+            case ',' -> addToken(TokenType.COMMA, ",");
+            case '.' -> addToken(TokenType.DOT, ".");
+
+            default -> {
+                // TODO: error handling later
+            }
+        }
     }
 
 }
