@@ -53,10 +53,16 @@ public class Lexer {
 
         switch (c) {
 
-            default:
-                // TODO: implement lexer rules
+            case ' ':
+            case '\t':
+            case '\r':
+            case '\n':
+                // Ignore whitespace
                 break;
 
+            default:
+                // TODO: Next commits
+                break;
         }
 
     }
