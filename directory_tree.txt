@@ -1,0 +1,42 @@
+ساختار درختی پوشه: G:\Projects\Java\Persica
+========================================
+├── .gradle
+│   ├── 9.0.0
+│   │   ├── checksums
+│   │   │   └── checksums.lock
+│   │   ├── executionHistory
+│   │   │   └── executionHistory.lock
+│   │   ├── expanded
+│   │   ├── fileChanges
+│   │   │   └── last-build.bin
+│   │   ├── fileHashes
+│   │   │   ├── fileHashes.bin
+│   │   │   └── fileHashes.lock
+│   │   ├── vcsMetadata
+│   │   └── gc.properties
+│   ├── buildOutputCleanup
+│   │   ├── buildOutputCleanup.lock
+│   │   └── cache.properties
+│   └── vcs-1
+│       └── gc.properties
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── com
+│   │   │       └── persica
+│   │   │           └── Main.java
+│   │   └── resources
+│   └── test
+│       ├── java
+│       └── resources
+├── .gitignore
+├── build.gradle.kts
+├── directory_tree.txt
+├── gradlew
+├── gradlew.bat
+├── main.py
+└── settings.gradle.kts
