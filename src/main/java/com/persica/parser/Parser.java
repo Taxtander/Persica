@@ -87,7 +87,35 @@ public class Parser {
     // EXPRESSIONS
     // =========================
     private Expression expression() {
-        return assignment();
+        return comparison();
+    }
+    private Expression comparison() {
+
+        Expression expr = addition();
+
+        while (
+                match(
+                        TokenType.GREATER,
+                        TokenType.LESS,
+                        TokenType.GREATER_EQUAL,
+                        TokenType.LESS_EQUAL,
+                        TokenType.EQUAL,
+                        TokenType.NOT_EQUAL
+                )
+        ) {
+
+            Token operator = previous();
+            Expression right = addition();
+
+            expr = new BinaryExpression(
+                    expr,
+                    operator.getLexeme(),
+                    right
+            );
+
+        }
+
+        return expr;
     }
 
     private Expression addition() {

@@ -85,9 +85,19 @@ public class Interpreter {
                 case "*" -> toNumber(left) * toNumber(right);
                 case "/" -> toNumber(left) / toNumber(right);
 
-                default -> null;
-            };
-        }
+                case ">"  -> toNumber(left) > toNumber(right);
+                case "<"  -> toNumber(left) < toNumber(right);
+
+                case ">=" -> toNumber(left) >= toNumber(right);
+                case "<=" -> toNumber(left) <= toNumber(right);
+
+                case "==" -> toNumber(left) == toNumber(right);
+                case "!=" -> toNumber(left) != toNumber(right);
+
+                default -> throw new RuntimeException(
+                        "Unknown operator: " + bin.operator
+                );
+            };        }
 
         return null;
     }
