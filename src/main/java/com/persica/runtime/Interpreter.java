@@ -64,6 +64,15 @@ public class Interpreter {
             return env.get(id.name);
         }
 
+        if (expr instanceof AssignmentExpression assign) {
+
+            Object value = evaluate(assign.value);
+
+            env.assign(assign.name, value);
+
+            return value;
+        }
+
         if (expr instanceof BinaryExpression bin) {
 
             Object left = evaluate(bin.left);

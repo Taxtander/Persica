@@ -11,6 +11,15 @@ public class Environment {
         variables.put(name, value);
     }
 
+    public void assign(String name, Object value) {
+
+        if (!variables.containsKey(name)) {
+            throw new RuntimeException("Undefined variable: " + name);
+        }
+
+        variables.put(name, value);
+    }
+
     public Object get(String name) {
         return variables.get(name);
     }

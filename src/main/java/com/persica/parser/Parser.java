@@ -87,7 +87,7 @@ public class Parser {
     // EXPRESSIONS
     // =========================
     private Expression expression() {
-        return addition();
+        return assignment();
     }
 
     private Expression addition() {
@@ -100,6 +100,28 @@ public class Parser {
             Expression right = multiplication();
 
             expr = new BinaryExpression(expr, operator.getLexeme(), right);
+        }
+
+        return expr;
+    }
+
+    private Expression assignment() {
+
+        Expression expr = addition();
+
+        if (match(TokenType.ASSIGN)) {
+
+            Token equals = previous();
+            Expression value = assignment();
+
+            if (expr instanceof Identifier id) {
+                return new AssignmentExpression(id.name, value);
+            }
+
+            throw new RuntimeException(
+                    "Invalid assignment target near '" +
+                            equals.getLexeme() + "'"
+            );
         }
 
         return expr;
