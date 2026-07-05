@@ -1,8 +1,6 @@
-print(10 > 5);
-print(10 < 5);
+print(true);
+print(false);
 
-print(10 >= 10);
-print(10 <= 5);
+bool ok = true;
 
-print(10 == 10);
-print(10 != 5);
+print(ok);

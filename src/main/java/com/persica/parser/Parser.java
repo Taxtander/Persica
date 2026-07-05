@@ -172,8 +172,17 @@ public class Parser {
 
     private Expression primary() {
 
+
         if (match(TokenType.NUMBER)) {
             return new Literal(previous().getLexeme());
+        }
+
+        if (match(TokenType.TRUE)) {
+            return new Literal(true);
+        }
+
+        if (match(TokenType.FALSE)) {
+            return new Literal(false);
         }
 
         if (match(TokenType.IDENTIFIER)) {
