@@ -18,6 +18,14 @@ public class Interpreter {
             execute(stmt);
         }
     }
+    private boolean toBoolean(Object obj) {
+
+        if (obj instanceof Boolean b) {
+            return b;
+        }
+
+        return Boolean.parseBoolean(obj.toString());
+    }
 
     // =========================
     // STATEMENTS
@@ -71,6 +79,18 @@ public class Interpreter {
             env.assign(assign.name, value);
 
             return value;
+        }
+
+        if (expr instanceof UnaryExpression unary) {
+
+            Object right = evaluate(unary.right);
+
+            return switch (unary.operator) {
+
+                case "!" -> !toBoolean(right);
+
+                default -> null;
+            };
         }
 
         if (expr instanceof BinaryExpression bin) {

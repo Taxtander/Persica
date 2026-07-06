@@ -33,14 +33,6 @@ public class OperatorScanner {
 
             }
 
-            case '!' -> {
-
-                if (context.reader().match('=')) {
-                    context.add(TokenType.NOT_EQUAL, "!=");
-                }
-
-            }
-
             case '>' -> {
 
                 if (context.reader().match('=')) {
@@ -73,6 +65,36 @@ public class OperatorScanner {
             case ';' -> context.add(TokenType.SEMICOLON, ";");
             case ',' -> context.add(TokenType.COMMA, ",");
             case '.' -> context.add(TokenType.DOT, ".");
+
+            case '&' -> {
+
+                if (context.reader().match('&')) {
+                    context.add(TokenType.AND, "&&");
+                } else {
+                    throw new RuntimeException("Unexpected '&'");
+                }
+
+            }
+
+            case '|' -> {
+
+                if (context.reader().match('|')) {
+                    context.add(TokenType.OR, "||");
+                } else {
+                    throw new RuntimeException("Unexpected '|'");
+                }
+
+            }
+
+            case '!' -> {
+
+                if (context.reader().match('=')) {
+                    context.add(TokenType.NOT_EQUAL, "!=");
+                } else {
+                    context.add(TokenType.NOT, "!");
+                }
+
+            }
 
         }
 

@@ -87,7 +87,55 @@ public class Parser {
     // EXPRESSIONS
     // =========================
     private Expression expression() {
-        return comparison();
+        return logicalOr();
+    }
+
+    private Expression logicalOr() {
+
+        Expression expr = logicalAnd();
+
+        while (match(TokenType.OR)) {
+
+            Token operator = previous();
+
+            Expression right = logicalAnd();
+
+            expr = new BinaryExpression(expr, operator.getLexeme(), right);
+        }
+
+        return expr;
+    }
+
+    private Expression logicalAnd() {
+
+        Expression expr = equality();
+
+        while (match(TokenType.AND)) {
+
+            Token operator = previous();
+
+            Expression right = equality();
+
+            expr = new BinaryExpression(expr, operator.getLexeme(), right);
+        }
+
+        return expr;
+    }
+
+    private Expression equality() {
+
+        Expression expr = comparison();
+
+        while (match(TokenType.EQUAL, TokenType.NOT_EQUAL)) {
+
+            Token operator = previous();
+
+            Expression right = comparison();
+
+            expr = new BinaryExpression(expr, operator.getLexeme(), right);
+        }
+
+        return expr;
     }
     private Expression comparison() {
 
@@ -98,9 +146,7 @@ public class Parser {
                         TokenType.GREATER,
                         TokenType.LESS,
                         TokenType.GREATER_EQUAL,
-                        TokenType.LESS_EQUAL,
-                        TokenType.EQUAL,
-                        TokenType.NOT_EQUAL
+                        TokenType.LESS_EQUAL
                 )
         ) {
 
@@ -117,7 +163,6 @@ public class Parser {
 
         return expr;
     }
-
     private Expression addition() {
 
         Expression expr = multiplication();
@@ -135,11 +180,12 @@ public class Parser {
 
     private Expression assignment() {
 
-        Expression expr = addition();
+        Expression expr = logicalOr();
 
         if (match(TokenType.ASSIGN)) {
 
             Token equals = previous();
+
             Expression value = assignment();
 
             if (expr instanceof Identifier id) {
@@ -154,16 +200,13 @@ public class Parser {
 
         return expr;
     }
-
     private Expression multiplication() {
 
-        Expression expr = primary();
-
+        Expression expr = unary();
         while (match(TokenType.STAR, TokenType.SLASH)) {
 
             Token operator = previous();
-            Expression right = primary();
-
+            Expression right = unary();
             expr = new BinaryExpression(expr, operator.getLexeme(), right);
         }
 
@@ -220,6 +263,23 @@ public class Parser {
         if (!isAtEnd()) current++;
 
         return previous();
+    }
+
+    private Expression unary() {
+
+        if (match(TokenType.NOT)) {
+
+            Token operator = previous();
+
+            Expression right = unary();
+
+            return new UnaryExpression(
+                    operator.getLexeme(),
+                    right
+            );
+        }
+
+        return primary();
     }
 
     private boolean isAtEnd() {
