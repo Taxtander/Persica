@@ -215,6 +215,15 @@ public class Parser {
 
     private Expression primary() {
 
+        if (match(TokenType.LEFT_PAREN)) {
+
+            Expression expr = expression();
+
+            consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
+
+            return expr;
+        }
+
 
         if (match(TokenType.NUMBER)) {
             return new Literal(previous().getLexeme());

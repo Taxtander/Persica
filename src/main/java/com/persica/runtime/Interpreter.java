@@ -107,16 +107,15 @@ public class Interpreter {
 
                 case ">"  -> toNumber(left) > toNumber(right);
                 case "<"  -> toNumber(left) < toNumber(right);
-
                 case ">=" -> toNumber(left) >= toNumber(right);
                 case "<=" -> toNumber(left) <= toNumber(right);
+                case "==" -> left.equals(right);
+                case "!=" -> !left.equals(right);
 
-                case "==" -> toNumber(left) == toNumber(right);
-                case "!=" -> toNumber(left) != toNumber(right);
+                case "&&" -> toBoolean(left) && toBoolean(right);
+                case "||" -> toBoolean(left) || toBoolean(right);
 
-                default -> throw new RuntimeException(
-                        "Unknown operator: " + bin.operator
-                );
+                default -> null;
             };        }
 
         return null;

@@ -1,3 +1,11 @@
-print(!true);
+print(true && true);
+print(true && false);
 
+print(false || true);
+print(false || false);
+
+print(!true);
 print(!false);
+
+print((10 > 5) && (20 > 10));
+print((10 > 5) && (20 < 10));
