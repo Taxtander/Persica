@@ -1,66 +1,102 @@
-.gradle
+# ==========================
+# Java / Gradle
+# ==========================
+.gradle/
 build/
+.kotlin/
+out/
+*.class
+hs_err_pid*
+
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-.kotlin
+!**/src/main/**/out/
+!**/src/test/**/out/
 
-### IntelliJ IDEA ###
+# ==========================
+# IntelliJ IDEA
+# ==========================
+.idea/
 .idea/modules.xml
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
-*.iws
+
 *.iml
 *.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+*.iws
 
-### Eclipse ###
+# ==========================
+# Eclipse
+# ==========================
 .apt_generated
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
 .sts4-cache
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### NetBeans ###
+# ==========================
+# NetBeans
+# ==========================
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
+# ==========================
+# VS Code
+# ==========================
 .vscode/
 
-### Mac OS ###
+# ==========================
+# macOS / Windows
+# ==========================
 .DS_Store
-
-
-main.py
-directory_tree.txt
-
 Thumbs.db
 
-# Logs
-*.log
+# ==========================
+# Python
+# ==========================
+*.py
+*.pyc
+*.pyo
+*.pyd
 
-# Temporary files
+__pycache__/
+.venv/
+venv/
+env/
+ENV/
+
+.pytest_cache/
+.mypy_cache/
+
+# ==========================
+# Logs & Temporary Files
+# ==========================
+*.log
 *.tmp
 *.temp
 
-# Java
-*.class
-hs_err_pid*
+# ==========================
+# Environment
+# ==========================
+.env
 
-# Generated documentation
+# ==========================
+# Generated Documentation
+# ==========================
 /site/
 
-# Local environment
-.env
+# ==========================
+# Project Files
+# ==========================
+directory_tree.txt
+main.py
